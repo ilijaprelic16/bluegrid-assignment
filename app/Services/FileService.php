@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\DTO\ParsedData;
 use App\Exceptions\FileServiceFetchException;
+use Generator;
 use Illuminate\Support\Facades\Http;
 
 class FileService
@@ -15,10 +17,8 @@ class FileService
         $this->fileUrl = config('services.file_service.url');
     }
 
-    public function parseData(array $data): array
+    public function parseData(array $data): ParsedData
     {
-//        //TODO: validate data
-
         $parsedData = [];
         foreach ($data['items'] as $item) {
             $urlParts = parse_url($item['fileUrl']);
@@ -43,7 +43,7 @@ class FileService
             $currentArray[] = $file;
 
         }
-        return $parsedData;
+        return new ParsedData($parsedData);
     }
 
     /**

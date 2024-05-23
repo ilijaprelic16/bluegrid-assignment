@@ -59,11 +59,36 @@ class FileServiceTest extends TestCase
                 ]
             ],
         ];
+        $this->sampleResult = [
+            "34.8.32.234" => [
+                "SvnRep" => [
+                    "ADV-H5-New" => [
+                        "README.txt" => ["README.txt"],
+                        "VisualSVN.lck" => ["VisualSVN.lck"],
+                        "hooks-env.tmpl" => ["hooks-env.tmpl"]
+                    ],
+                    "AT-APP" => [
+                        "README.txt" => ["README.txt"],
+                        "VisualSVN.lck" => ["VisualSVN.lck"],
+                        "hooks-env.tmpl" => ["hooks-env.tmpl"]
+                    ],
+                    "README.txt" => ["README.txt"],
+                    "VisualSVN.lck" => ["VisualSVN.lck"],
+                    "hooks-env.tmpl" => ["hooks-env.tmpl"]
+                ],
+                "www" => [
+                    "README.txt" => ["README.txt"],
+                    "VisualSVN.lck" => ["VisualSVN.lck"],
+                    "hooks-env.tmpl" => ["hooks-env.tmpl"]
+                ]
+            ]
+        ];
     }
 
     public function test_parse_data()
     {
-        $this->fileService->parseData($this->sampleData);
+        $result = $this->fileService->parseData($this->sampleData);
+        $this->assertEquals($result->getData(), $this->sampleResult);
 
     }
 

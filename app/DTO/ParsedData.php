@@ -2,33 +2,16 @@
 
 namespace App\DTO;
 
-use Illuminate\Support\Collection;
 
-class ParsedData
-{
-    private string $host;
-    private array $directories;
+class ParsedData {
+    private array $data;
 
-    public function getHost(): string
-    {
-        return $this->host;
+    public function __construct(array $data) {
+        $this->data = $data;
     }
 
-    public function setHost(string $host): void
+    public function getData(): array
     {
-        $this->host = $host;
+        return $this->data;
     }
-
-    public function getDirectories(): array
-    {
-        return $this->directories;
-    }
-
-    public function setDirectories(array $directories): void
-    {
-        $this->directories = $directories;
-    }
-
-
-
 }
