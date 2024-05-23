@@ -32,6 +32,14 @@ class FileService
         return $parsedData;
     }
 
+    /**
+     * @throws FileServiceFetchException
+     */
+    public function cacheData(): void
+    {
+        Cache::put($this->cacheKey, $this->parseData($this->fetchData())->getData());
+    }
+
     public function parseData(array $data): ParsedData
     {
         $parsedData = [];
