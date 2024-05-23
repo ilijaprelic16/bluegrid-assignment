@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\DTO\ParsedData;
 use App\Exceptions\FileServiceFetchException;
-use Generator;
 use Illuminate\Support\Facades\Http;
 
 class FileService
@@ -15,6 +14,13 @@ class FileService
     public function __construct()
     {
         $this->fileUrl = config('services.file_service.url');
+    }
+
+
+    public function getData():array
+    {
+        $data = $this->fetchData();
+        return $this->parseData($data)->getData();
     }
 
     public function parseData(array $data): ParsedData

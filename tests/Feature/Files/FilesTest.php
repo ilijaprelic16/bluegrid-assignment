@@ -1,22 +1,20 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Feature\Files;
 
-use App\Exceptions\FileServiceFetchException;
-use App\Services\FileService;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class FileServiceTest extends TestCase
+class FilesTest extends TestCase
 {
-    private FileService $fileService;
-
+    private string $dataUrl;
     private array $sampleData;
+    private array $sampleResult;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->fileService = app(FileService::class);
+        $this->dataUrl = config('services.file_service.url');
         $this->sampleData = [
             'items' => [
 
@@ -83,24 +81,17 @@ class FileServiceTest extends TestCase
             ]
         ];
     }
-
-    public function test_parse_data()
-    {
-        $result = $this->fileService->parseData($this->sampleData);
-        $this->assertEquals($result->getData(), $this->sampleResult);
-
-    }
-
+    const  ROUTE = 'api/files';
     /**
      * A basic test example.
-     * @throws FileServiceFetchException
      */
-    public function test_fetch_data(): void
+    public function test_files(): void
     {
         Http::fake([
-            $this->fileService->fileUrl => Http::response($this->sampleData)
+            $this->dataUrl => Http::response($this->sampleData)
         ]);
-        $data = $this->fileService->fetchData();
-        $this->assertEquals($this->sampleData, $data);
+        $response = $this->getJson(self::ROUTE);
+        $response->assertStatus(200);
+        $this->assertEquals($this->sampleResult, $response->json('data'));
     }
 }
