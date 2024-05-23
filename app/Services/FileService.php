@@ -4,23 +4,32 @@ namespace App\Services;
 
 use App\DTO\ParsedData;
 use App\Exceptions\FileServiceFetchException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class FileService
 {
     public string $fileUrl;
-
+    public string $cacheKey;
 
     public function __construct()
     {
         $this->fileUrl = config('services.file_service.url');
+        $this->cacheKey = config('services.file_service.cache_key');
     }
 
-
-    public function getData():array
+    /**
+     * @throws FileServiceFetchException
+     */
+    public function getData(): array
     {
+        if (Cache::has($this->cacheKey)) {
+            return Cache::get($this->cacheKey);
+        }
         $data = $this->fetchData();
-        return $this->parseData($data)->getData();
+        $parsedData = $this->parseData($data)->getData();
+        Cache::put($this->cacheKey, $parsedData);
+        return $parsedData;
     }
 
     public function parseData(array $data): ParsedData

@@ -14,7 +14,8 @@ return [
     |
     */
     'file_service' => [
-       'url' => env('FILES_URL'),
+        'url' => env('FILES_URL', 'rest-test-eight.vercel.app/api/test'),
+        'cache_key' => env('FILES_CACHE_KEY', 'files_data'),
     ],
 
     'postmark' => [
