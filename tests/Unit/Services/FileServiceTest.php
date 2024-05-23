@@ -103,4 +103,16 @@ class FileServiceTest extends TestCase
         $data = $this->fileService->fetchData();
         $this->assertEquals($this->sampleData, $data);
     }
+
+    /**
+     * @throws FileServiceFetchException
+     */
+    public function test_cache_files()
+    {
+        Http::fake([
+            $this->fileService->fileUrl => Http::response($this->sampleData)
+        ]);
+        $this->fileService->cacheData();
+        $this->assertTrue($this->fileService->hasCache());
+    }
 }

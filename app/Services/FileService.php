@@ -23,13 +23,23 @@ class FileService
      */
     public function getData(): array
     {
-        if (Cache::has($this->cacheKey)) {
-            return Cache::get($this->cacheKey);
+        if ($this->hasCache()) {
+           return $this->getCachedData();
         }
         $data = $this->fetchData();
         $parsedData = $this->parseData($data)->getData();
         Cache::put($this->cacheKey, $parsedData);
         return $parsedData;
+    }
+
+    public function hasCache(): bool
+    {
+        return Cache::has($this->cacheKey);
+    }
+
+    public function getCachedData(): array
+    {
+        return Cache::get($this->cacheKey);
     }
 
     /**
