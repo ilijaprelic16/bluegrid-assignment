@@ -29,7 +29,7 @@ class FileService
         $data = $this->fetchData();
         $parsedData = $this->parseData($data)->getData();
         Cache::put($this->cacheKey, $parsedData);
-        return $parsedData;add
+        return $parsedData;
     }
 
     public function hasCache(): bool
